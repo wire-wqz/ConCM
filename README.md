@@ -49,6 +49,8 @@ As an example, to run the mini-ImageNet experiment from the paper:
     $ chmod +x ./scripts/run_miniimage.sh
     $ ./scripts/run_miniimage.sh
 
+For the above experiments find the computed metrics available under: `./checkpoints/mini_imagenet/result.txt`
+
 
 
 
