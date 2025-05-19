@@ -1,62 +1,54 @@
-# OrCo: Towards Better Generalization via Orthogonality and Contrast for Few-Shot Class-Incremental Learning
-
-[![Static Badge](https://img.shields.io/badge/arxiv-orco-red)](https://arxiv.org/abs/2403.18550)\
-PyTorch implementation of the OrCo Framework, CVPR 2024 highlight  🎉 
-
+# ConCM: Consistency-Driven Calibration and Matching for Few-Shot Class-Incremental Learning
 
 ## Abstract
-Few-Shot Class-Incremental Learning (FSCIL) introduces a paradigm in which the problem space expands with limited data. FSCIL methods inherently face the challenge of catastrophic forgetting as data arrives incrementally, making models susceptible to overwriting previously acquired knowledge. Moreover, given the scarcity of labeled samples available at any given time, models may be prone to overfitting and find it challenging to strike a balance between extensive pretraining and the limited incremental data. To address these challenges, we propose the OrCo framework built on two core principles: features' orthogonality in the representation space, and contrastive learning. In particular, we improve the generalization of the embedding space by employing a combination of supervised and self-supervised contrastive losses during the pretraining phase. Additionally, we introduce OrCo loss to address challenges arising from data limitations during incremental sessions. Through feature space perturbations and orthogonality between classes, the OrCo loss maximizes margins and reserves space for the following incremental data. This, in turn, ensures the accommodation of incoming classes in the feature space without compromising previously acquired knowledge. Our experimental results showcase state-of-the-art performance across three benchmark datasets, including mini-ImageNet, CIFAR100, and CUB datasets.
+Few-Shot Class-Incremental Learning (FSCIL) requires models to adapt to novel classes with limited supervision while preserving learned knowledge. Existing prospective learning-based space construction methods reserve space to accommodate novel classes. However, prototype deviation and structure fixity limit the expressiveness of the embedding space. In contrast to fixed space reservation, we explore the optimization of feature-structure dual consistency and propose a Consistency-driven Calibration and Matching Framework (ConCM) that systematically mitigate the knowledge conflict inherent in FSCIL. Specifically, inspired by hippocampal associative memory, we design a memory-aware prototype calibration that extracts generalized semantic attributes from base classes and reintegrates them into novel classes to enhance the conceptual center consistency of features. Further, we propose dynamic structure matching, which adaptively aligns the calibrated features to a session-specific optimal manifold space, ensuring cross-session structure consistency. Theoretical analysis shows that our method satisfies both geometric optimality and maximum matching, thereby overcoming the need for class-number priors. On large-scale FSCIL benchmarks including mini-ImageNet and CUB200, ConCM achieves state-of-the-art performance, surpassing the current optimal method by 3.20% and 3.68% in harmonic accuracy of incremental sessions.
 
-## OrCo Framework
+## ConCM Framework
 
-<img src='./figures/OrCo-pipeline.jpg'>
+<img src='./figures/framework.jpg'>
 
 ## Results
 
-<img src='./figures/sota_fig_all.png'>
+<img src='./figures/visualization.png'>
+<img src='./figures/sota.png'>
 
 ## Requirements
-- [PyTorch >= version 1.13.1](https://pytorch.org)
+- Python 3.6
+- [PyTorch xxx](https://pytorch.org)
 - tqdm
 - matplotlib
-- pandas
 - scikit-learn
 - numpy
-- prettytable
+- pandas
+
 
 ## Datasets and pretrained models
-We follow [FSCIL](https://github.com/xyutao/fscil) setting and use the same data index_list for training splits across incremental sessions. 
-For Phase 1 of the OrCo framework and the datasets CIFAR100 and mini-ImageNet, we use the [solo-learn](https://github.com/vturrisi/solo-learn) library to train our model. You can download the pretrained models [here](https://drive.google.com/drive/folders/1bn7U5bWtGmubv_zIvyBwOMlBKFOFwquI?usp=sharing). Place the downloaded models under `./params/OrCo/` and unzip it. Note that for CUB200 we do not perform phase 1 given that it is common in literature to use an ImageNet pretrained model for incremental tasks. This is automatically handled from within the code.
+We follow [FSCIL](https://github.com/xyutao/fscil) setting and use the same data index_list for training splits across incremental sessions. The datasets are made readily available by the authors of CEC in their github repository [here](https://github.com/icoz69/CEC-CVPR2021?tab=readme-ov-file#datasets-and-pretrained-models). Follow their provided instructions to download and unzip. Please make sure to overwrite the correct path in the shell script.
 
-The datasets are made readily available by the authors of CEC in their github repository [here](https://github.com/icoz69/CEC-CVPR2021?tab=readme-ov-file#datasets-and-pretrained-models). Follow their provided instructions to download and unzip. We assume in our code that the datasets are present inside a `datasets` folder on the same directory level as the cloned repository. If this is not the case then you will need to overwrite the correct path in the shell script.
+
+You can download the pretrained models [here](https:xxxxxxxxxxxxxx). Place the downloaded models under `./params` and unzip it. 
+
+
+
+## Extract prior knowledge
+The `./prior` folder contains the preprocessed `<mini_imagenet/cub200>_part_prior_train.pickle` files. You can use them directly in the train process without further processing.
+
+ If you want to rebuild the semantic prior knowledge of the dataset. Please download the file of [**glove_840b_300d**](https://nlp.stanford.edu/data/glove.840B.300d.zip) and then perform:
+```bash
+    python ./prior/get_miniimagenet_primitive_knowledge.py
+```
+```bash
+    python ./prior/get_cub200_primitive_knowledge.py
+```
 
 ## Training
-
-With the current setup, Phase 2 and Phase 3 (Base and Incremental Sessions) of our pipeline are run sequentially with a single command. The final metrics can then be found in the `./logs` under the appropriate datasets. Find the scripts with the best hyperparameters under `./scripts`. 
+Find the scripts with the best hyperparameters under `./scripts`. 
 
 As an example, to run the mini-ImageNet experiment from the paper:
 
-    $ chmod +x ./scripts/run_minet.sh
-    $ ./scripts/run_minet.sh
+    $ chmod +x ./scripts/run_miniimage.sh
+    $ ./scripts/run_miniimage.sh
 
-For the above experiments find the computed metrics available under: `mini_imagenet/orco/<save_path_prefix>_<hp1_choice>-<hp2_choice>/results.txt`
 
-## Citation
-If you use this code to assist your research, please cite our paper using the following bib entry:
 
-        @inproceedings{ahmed2024orco,
-            title={OrCo: Towards Better Generalization via Orthogonality and Contrast for Few-Shot Class-Incremental Learning},
-            author={Ahmed, Noor and Kukleva, Anna and Schiele, Bernt},
-            booktitle={41st IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-            year={2024},
-            organization={IEEE}
-        }
 
-## Acknowledgment
-Our project references the codes in the following repositories.
-
-- [CEC](https://github.com/icoz69/CEC-CVPR2021)
-- [solo-learn](https://github.com/vturrisi/solo-learn)
-- [fscil](https://github.com/xyutao/fscil)
-- [FACT](https://github.com/zhoudw-zdw/CVPR22-Fact)
-- [NC-FSCIL](https://github.com/NeuralCollapseApplications/FSCIL)
