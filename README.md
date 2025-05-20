@@ -59,5 +59,16 @@ To run the mini-ImageNet experiment:
 For the above experiments find the computed metrics available under: `./checkpoints/mini_imagenet/result.txt`
 
 
+## Acknowledgment
+Our project references the codes in the following repositories.
+
+- [CEC](https://github.com/icoz69/CEC-CVPR2021)
+- [fscil](https://github.com/xyutao/fscil)
+- [NC-FSCIL](https://github.com/NeuralCollapseApplications/FSCIL)
+- [OrCo](https://github.com/noorahmedds/OrCo)
+
+
+
+
 
 
