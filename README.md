@@ -39,7 +39,7 @@ The `./prior` folder contains the preprocessed `<mini_imagenet/cub200>_part_prio
 ```
 
 ```bash
-    python ./prior/get_miniimagenet_primitive_knowledge.py
+   python ./prior/get_miniimagenet_primitive_knowledge.py
 ```
 
 
