@@ -5,12 +5,12 @@ Few-Shot Class-Incremental Learning (FSCIL) requires models to adapt to novel cl
 
 ## ConCM Framework
 
-<img src='https://github.com/wire-wqz/ConCM/blob/main/figures/framework.png'>
+<img src='https://anonymous.4open.science/r/ConCM-307A/figures/framework.png'>
 
 ## Results
 
-<img src='https://github.com/wire-wqz/ConCM/blob/main/figures/visualization.png'>
-<img src='https://github.com/wire-wqz/ConCM/blob/main/figures/sota.png'>
+<img src='https://anonymous.4open.science/r/ConCM-307A/figures/visualization.png'>
+<img src='https://anonymous.4open.science/r/ConCM-307A/figures/sota.png'>
 
 ## Requirements
 - Python 3.10
