@@ -26,7 +26,7 @@ Few-Shot Class-Incremental Learning (FSCIL) requires models to adapt to novel cl
 We follow [FSCIL](https://github.com/xyutao/fscil) setting and use the same data index_list for training splits across incremental sessions. The datasets are made readily available by the authors of [CEC](https://github.com/icoz69/CEC-CVPR2021?tab=readme-ov-file#datasets-and-pretrained-models) in their github repository. Follow their provided instructions to download and unzip. Please make sure to overwrite the correct path in the shell script.
 
 
-You can download the pretrained models [here](https://transfer.pcloud.com/download.html?code=5ZAndh5ZTlUU2rwxXzbZJskp7ZXQ6Dt4BX0Y5Ek51D38BmqktPd6e7). Place the downloaded models under `./params` and unzip it. 
+You can download the pretrained models [here](https://send.now/p59qm6ospr7d). Place the downloaded models under `./params` and unzip it. 
 
 
 
