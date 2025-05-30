@@ -34,10 +34,8 @@ def get_base_dataloader(args, dino_transform = None):
         testset = args.Dataset.CUB200(root=args.dataroot, train=False, index=class_index)
 
     if args.dataset == 'mini_imagenet':
-        trainset = args.Dataset.MiniImageNet(root=args.dataroot, train=True, index=class_index,data_aug=False,base_sess=True)
-        testset = args.Dataset.MiniImageNet(root=args.dataroot, train=False, index=class_index,data_aug=False)
-
-
+        trainset = args.Dataset.MiniImageNet(root=args.dataroot, train=True, index=class_index,base_sess=True)
+        testset = args.Dataset.MiniImageNet(root=args.dataroot, train=False, index=class_index)
 
     return trainset, testset
 
@@ -69,7 +67,6 @@ def get_session_classes(args,session):
 
 def get_new_joint_dataloader(args, session):
     # Data replay (only incremental data is replayed)
-
     if args.dataset == 'cub200':
         txt_path = "data/index_list/" + args.dataset + "/session_" + str(session + 1) + '.txt'
         trainset = args.Dataset.CUB200(root=args.dataroot, train=True, index_path=txt_path)
@@ -95,7 +92,7 @@ def get_new_joint_dataloader(args, session):
         for inter_ix in range(1, session):
             txt_path = "data/index_list/" + args.dataset + "/session_" + str(inter_ix + 1) + '.txt'
             # Get data from current index
-            inter_set = args.Dataset.MiniImageNet(root=args.dataroot, train=True, index_path=txt_path, base_sess=False,data_aug=False)
+            inter_set = args.Dataset.MiniImageNet(root=args.dataroot, train=True, index_path=txt_path)
             if args.replay_num != args.shot:
                 inter_targets = np.array(inter_set.targets)
                 for i in np.unique(inter_targets):

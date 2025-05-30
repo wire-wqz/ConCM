@@ -10,18 +10,15 @@ def get_command_line_parser():
     parser.add_argument('-pretrain_path', type=str, default='./params')
     parser.add_argument('-save_path', type=str, default='./checkpoints')
 
-    parser.add_argument('-num_workers', type=int, default=4)
+    parser.add_argument('-num_workers', type=int, default=8)
 
-    parser.add_argument('-pretrain_batch', type=int, default=128)
-    parser.add_argument('-pretrain_lr', type=float, default=0.1)
-    parser.add_argument('-pretrain_epochs', type=int, default=200)
-    parser.add_argument('-pretrain_warmup_epochs', type=int, default=10)
+    parser.add_argument('-protonet_shot', type=int, default=1)
+    parser.add_argument('-protonet_lr', type=float, default=1)
 
     parser.add_argument('-protonet_batch', type=int, default=128)
-    parser.add_argument('-protonet_lr', type=float, default=1)
     parser.add_argument('-protonet_epochs', type=int, default=200)
     parser.add_argument('-protonet_warmup_epochs', type=int, default=10)
-    parser.add_argument('-protonet_shot', type=int, default=1)
+
     parser.add_argument('-protonet_task_num', type=int, default=15000)
 
     parser.add_argument('-align_batch', type=int, default=32)
@@ -31,7 +28,7 @@ def get_command_line_parser():
 
     parser.add_argument('-increment_batch', type=int, default=32)
     parser.add_argument('-increment_lr', type=float, default=0.01)
-    parser.add_argument('-increment_epochs', type=int, default=25)
+    parser.add_argument('-increment_epochs', type=int, default=20)
     parser.add_argument('-increment_warmup_epochs', type=int, default=0)
 
     parser.add_argument('-test_batch', type=int, default=100)
@@ -53,10 +50,7 @@ def get_command_line_parser():
     parser.add_argument('-contrastive_loss_mode', type=str, default="only_novel",choices=["only_novel", 'all'])
     parser.add_argument('-plt_cm', action='store_true', default=0)
     parser.add_argument('-load_mode', type=str, default="train", choices=['load', 'train'])
-
     return parser
-
-
 
 if __name__ == '__main__':
     parser = get_command_line_parser()

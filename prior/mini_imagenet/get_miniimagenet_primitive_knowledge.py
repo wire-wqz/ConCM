@@ -35,7 +35,7 @@ def make_attribute_node(all_class_name, train_class_name, test_class_name):
         for paths in all_class_name[i].hypernym_paths():
             for sys in paths:
                 parts = sys.part_meronyms()
-                #parts = sys.substance_meronyms()    #
+                #parts = sys.substance_meronyms()
                 all_attrbute.extend(parts)
                 class_attrbute_dict[all_class_name[i]].extend(parts)
                 if len(parts) != 0:

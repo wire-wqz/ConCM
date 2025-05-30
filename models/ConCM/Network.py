@@ -253,7 +253,6 @@ class ConCM(nn.Module):
             mode="load"
         else:
             mode=self.args.load_mode
-
         if os.path.exists(save_path) and mode=="load": # load
             part = torch.load(save_path,weights_only=True)
             self.base_feature_mean = part['base_feature_mean']
@@ -263,57 +262,13 @@ class ConCM(nn.Module):
             prior_path = './prior/' + self.args.dataset + '_part_prior_train.pickle'
             self.eval()
             train_loader = DataLoader(dataset=trainset, batch_size=self.args.test_batch, shuffle=False, num_workers=self.args.num_workers,pin_memory=True)
-
             self.base_feature_mean,self.base_feature_cov = self.get_prototypes(train_loader, 'feature')
-
             with open(prior_path, 'rb') as handle:
                 part_prior = pickle.load(handle)
             base_attributeid_classid_dict=part_prior["base_attributeid_classid_dict"]
             self.attribute_feature_mean=self.get_attribute_feature_statistic(train_loader, base_attributeid_classid_dict)
-
             # save
             torch.save({'base_feature_mean': self.base_feature_mean,"base_feature_cov": self.base_feature_cov,"attribute_feature_mean":self.attribute_feature_mean}, save_path)
-
-    def pretrain_base(self, trainset, testset):
-        train_loader = DataLoader(dataset=trainset, batch_size=self.args.pretrain_batch, shuffle=True,
-                                  num_workers=self.args.num_workers, pin_memory=True)
-
-        criterion = nn.CrossEntropyLoss()
-        update_parameters = [{'params': self.prototype_classifier.parameters()},
-                             {'params': self.projector.parameters()}, {'params': self.feature_extractor.parameters()}, ]
-        optimizer = torch.optim.SGD(update_parameters, lr=self.args.pretrain_lr, momentum=0.9, dampening=0.9,
-                                    weight_decay=1e-4)
-        scheduler = LinearWarmupCosineAnnealingLR(optimizer, warmup_epochs=self.args.pretrain_warmup_epochs,
-                                                  max_epochs=self.args.pretrain_epochs,
-                                                  warmup_start_lr=3e-05 if self.args.pretrain_warmup_epochs > 0 else self.args.pretrain_lr,
-                                                  eta_min=1e-8)
-        self.train()
-        tqdm_gen = tqdm(range(self.args.pretrain_epochs), total=self.args.pretrain_epochs)
-        for epoch in tqdm_gen:
-            running_loss = utils.Averager()
-            running_acc = utils.Averager()
-            for idx, batch in enumerate(train_loader):  # 它用于将可迭代对象转换为一个迭代器，同时提供每个元素的索引(idx)
-                images, labels = batch
-                images = images.cuda(non_blocking=True)
-                labels = labels.cuda(non_blocking=True)
-                optimizer.zero_grad()  # 清零梯度
-                feature = self.feature_extractor(images)  # 前向传播
-                projs = self.projector(feature)
-                logits = self.prototype_classifier(projs)
-                # CE损失
-                loss = criterion(logits, labels)  # 计算损失CE，该损失内部自带softmax处理，直接输入logits值。
-                loss.backward()  # 反向传播
-                optimizer.step()  # 更新参数
-                with torch.no_grad():  # 指标统计
-                    running_loss.add(loss.item())
-                    running_acc.add(utils.count_acc(logits, labels))
-                    out_string = f'Epoch: [{epoch + 1}/{self.args.pretrain_epochs}],[{idx}/{len(train_loader)}], Acc_train: {running_acc.item() * 100:.4f}, Loss: {running_loss.item():.4f}'
-                    tqdm_gen.write(out_string)
-            scheduler.step()  # 更新学习率
-
-        # save
-        save_path = self.args.pretrain_path + '/' + self.args.dataset + '_model_pretrain.pth'
-        torch.save(self.state_dict(), save_path)
 
     def train_ProtoComNet_5shot(self,trainset):
         sampler = CategoriesSampler(trainset.targets,self.args.protonet_task_num , self.args.base_class, self.args.protonet_shot)
@@ -757,20 +712,16 @@ class ConCM(nn.Module):
             if self.args.contrastive_loss_mode=="only_novel":
                 logits = torch.cat((projs,targets[self.args.base_class:self.args.base_class + session * self.args.way,:]), dim=0)
                 labels = torch.cat((labels,targets_label[self.args.base_class:self.args.base_class + session * self.args.way]), dim=0)
-                # 随机打乱
                 random_indices = torch.randperm(logits.size(0))
                 logits = logits[random_indices]
                 labels = labels[random_indices]
-
                 logits = logits.unsqueeze(1)
             else:
                 logits = torch.cat((projs, targets),dim=0)
                 labels = torch.cat((labels, targets_label), dim=0)
-                # 随机打乱
                 random_indices = torch.randperm(logits.size(0))
                 logits = logits[random_indices]
                 labels = labels[random_indices]
-
                 logits = logits.unsqueeze(1)
 
         loss = sc_criterion(logits, labels)

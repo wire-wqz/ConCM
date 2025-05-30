@@ -24,9 +24,9 @@ class FSCILTrainer(Trainer):
         self.model = self.model.cuda()
 
 
-    def train_pretrain(self):
+    def load_pretrain(self):
         model_path = self.args.pretrain_path + '/' + self.args.dataset + '_model_pretrain.pth'
-        if os.path.exists(model_path):  # load (mini_imagenet need load)
+        if os.path.exists(model_path):
             # only backbone and projector
             best_model_dict = {}
             state_dict = torch.load(model_path, weights_only=True)
@@ -36,18 +36,11 @@ class FSCILTrainer(Trainer):
                 if "projector" in k:
                     best_model_dict[k] = v
             self.model.module.load_state_dict(best_model_dict, strict=False)
-        else: # train
-            if self.args.dataset == 'mini_imagenet':
-                raise ValueError("Please load backbone on mini_imagenet")
+        else:
+            raise ValueError("Please load backbone")
 
-            train_set, test_set = data_utils.get_base_dataloader(self.args)
-            self.model.module.pretrain_base(train_set,test_set)
 
-        # test
-        #_,test_set = data_utils.get_base_dataloader(self.args)
-        # self.model.module.model_test(test_set,0)
-
-    def train_meta(self):
+    def train_base(self):
         # data
         train_set, test_set = data_utils.get_base_dataloader(self.args)
         # train/load
@@ -75,14 +68,13 @@ class FSCILTrainer(Trainer):
 
     def train(self):
         # pretrain
-        self.train_pretrain()
-        # meta
-        self.train_meta()
+        self.load_pretrain()
+        # base
+        self.train_base()
         # novel
         utils.set_seed(self.args.rand_seed+1)
         for session in range(1, self.args.sessions):
             print(f"Increment session:{session}")
-
             if session>self.args.sessions/2:
                 self.args.base_weight=self.args.base_weight_half
 
@@ -90,8 +82,6 @@ class FSCILTrainer(Trainer):
             novel_set, test_set = data_utils.get_new_dataloader(self.args, session)
             # Increment train
             self.model.module.increment_update(train_set, test_set, novel_set, session)
-            # model_path = self.args.save_path+ '/' + self.args.dataset + '_session_' + str(session) + '.pth'
-            # self.model = load_model(self.args, model_path,session)
             acc_hm,acc_base,acc_novel,acc_all,output_string=self.model.module.model_test(test_set,session)
             self.trlog['max_hm'][session] = float('%.2f' % acc_hm)
             self.trlog['max_base_acc'][session] = float('%.2f' % acc_base)
