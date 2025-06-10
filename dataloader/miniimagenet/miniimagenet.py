@@ -177,7 +177,7 @@ if __name__ == '__main__':
     # class_index = open(txt_path).read().splitlines()
     base_class = 100
     class_index = np.arange(base_class)
-    dataroot = '/data/wangqw/datasets/FSCIL'
+    dataroot = '/data/datasets/FSCIL'
     batch_size_base = 400
     trainset = MiniImageNet(root=dataroot, train=False, transform=None, index=False)
     cls = np.unique(trainset.targets)
