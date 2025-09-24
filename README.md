@@ -1,16 +1,16 @@
 # ConCM: Consistency-Driven Calibration and Matching for Few-Shot Class-Incremental Learning
 
 ## Abstract
-Few-Shot Class-Incremental Learning (FSCIL) requires models to adapt to novel classes with limited supervision while preserving learned knowledge. Existing prospective learning-based space construction methods reserve space to accommodate novel classes. However, prototype deviation and structure fixity limit the expressiveness of the embedding space. In contrast to fixed space reservation, we explore the optimization of feature-structure dual consistency and propose a Consistency-driven Calibration and Matching Framework (ConCM) that systematically mitigate the knowledge conflict inherent in FSCIL. Specifically, inspired by hippocampal associative memory, we design a memory-aware prototype calibration that extracts generalized semantic attributes from base classes and reintegrates them into novel classes to enhance the conceptual center consistency of features. Further, we propose dynamic structure matching, which adaptively aligns the calibrated features to a session-specific optimal manifold space, ensuring cross-session structure consistency. Theoretical analysis shows that our method satisfies both geometric optimality and maximum matching, thereby overcoming the need for class-number priors. On large-scale FSCIL benchmarks including mini-ImageNet and CUB200, ConCM achieves state-of-the-art performance, surpassing the current optimal method by 3.20% and 3.68% in harmonic accuracy of incremental sessions.
+Few-Shot Class Incremental Learning (FSCIL) is crucial for adapting to the complex open-world environments. Contemporary prospective learning-based space construction methods struggle to balance old and new knowledge, as prototype bias and rigid structures limit the expressive capacity of the embedding space. Different from these strategies, we rethink the optimization dilemma from the perspective of feature-structure dual consistency, and propose a Consistency-driven Calibration and Matching (ConCM) framework that systematically mitigates the knowledge conflict inherent in FSCIL. Specifically, inspired by hippocampal associative memory, we design a memory-aware prototype calibration that extracts generalized semantic attributes from base classes and reintegrates them into novel classes to enhance the conceptual center consistency of features. Further, to consolidate memory associations, we propose dynamic structure matching, which adaptively aligns the calibrated features to a session-specific optimal manifold space, ensuring cross-session structure consistency. This process requires no class-number priors and is theoretically guaranteed to achieve geometric optimality and maximum matching. On large-scale FSCIL benchmarks including mini-ImageNet, CIFAR100 and CUB200, ConCM achieves state-of-the-art performance, with harmonic accuracy gains of up to 3.68% in incremental sessions.
 
 ## ConCM Framework
 
-<img src='https://anonymous.4open.science/r/ConCM-307A/figures/framework.png'>
+<img src='https://anonymous.4open.science/r/ConCM-7385/figures/framework.png'>
 
 ## Results
 
-<img src='https://anonymous.4open.science/r/ConCM-307A/figures/visualization.png'>
-<img src='https://anonymous.4open.science/r/ConCM-307A/figures/sota.png'>
+<img src='https://anonymous.4open.science/r/ConCM-7385/figures/visualization.png'>
+<img src='https://anonymous.4open.science/r/ConCM-7385/figures/sota.png'>
 
 ## Requirements
 - Python 3.10
@@ -39,6 +39,10 @@ The `./prior` folder contains the preprocessed `<mini_imagenet/cub200>_part_prio
 ```
 
 ```bash
+   python ./prior/get_cifar100_primitive_knowledge.py
+```
+
+```bash
    python ./prior/get_miniimagenet_primitive_knowledge.py
 ```
 
@@ -47,14 +51,24 @@ The `./prior` folder contains the preprocessed `<mini_imagenet/cub200>_part_prio
 Find the scripts with the best hyperparameters under `./scripts`. 
 
 As an example, to run the CUB200 experiment from the paper:
-   
-    $ chmod +x ./scripts/run_cub.sh
-    $ ./scripts/run_cub.sh
-    
+
+ ```bash
+    chmod +x ./scripts/run_cub.sh
+    ./scripts/run_cub.sh
+```
+To run the CIFAR100 experiment:
+
+ ```bash
+    chmod +x ./scripts/run_cifar100.sh
+    ./scripts/run_cifar100.sh
+```
+
 To run the mini-ImageNet experiment:
 
-    $ chmod +x ./scripts/run_miniimage.sh
-    $ ./scripts/run_miniimage.sh
+ ```bash
+    chmod +x ./scripts/run_miniimage.sh
+    ./scripts/run_miniimage.sh
+```
 
 For the above experiments find the computed metrics available under: `./checkpoints/<dataset>/result.txt`
 
