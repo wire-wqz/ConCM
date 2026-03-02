@@ -9,12 +9,12 @@ Few-Shot Class Incremental Learning (FSCIL) is crucial for adapting to the compl
 
 ## ConCM Framework
 
-<img src='https://anonymous.4open.science/r/ConCM-7385/figures/framework.png'>
+<img src='https://github.com/wire-wqz/ConCM/figures/framework.png'>
 
 ## Results
 
-<img src='https://anonymous.4open.science/r/ConCM-7385/figures/visualization.png'>
-<img src='https://anonymous.4open.science/r/ConCM-7385/figures/sota.png'>
+<img src='https://github.com/wire-wqz/ConCM/figures/visualization.png'>
+<img src='https://github.com/wire-wqz/ConCM/figures/sota.png'>
 
 ## Requirements
 - Python 3.10
@@ -30,7 +30,7 @@ Few-Shot Class Incremental Learning (FSCIL) is crucial for adapting to the compl
 We follow [FSCIL](https://github.com/xyutao/fscil) setting and use the same data index_list for training splits across incremental sessions. The datasets are made readily available by the authors of [CEC](https://github.com/icoz69/CEC-CVPR2021?tab=readme-ov-file#datasets-and-pretrained-models) in their github repository. Follow their provided instructions to download and unzip. Please make sure to overwrite the correct path in the shell script.
 
 
-You can download the pretrained models [here](https://send.now/7k5tj7bsfjkk). Place the downloaded models under `./params` and unzip it. 
+You can download the pretrained models [here](https://drive.google.com/drive/folders/153S1vP4UqiNEM4QMUlen6LOVL0KZdvls?usp=sharing), following [OrCo](https://github.com/noorahmedds/OrCo?tab=readme-ov-file). Place the downloaded models under `./params` and unzip it. 
 
 
 
