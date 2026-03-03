@@ -1,6 +1,6 @@
 # ConCM: Consistency-Driven Calibration and Matching for Few-Shot Class-Incremental Learning
 
-[![Static Badge](https://img.shields.io/badge/arxiv-ConCM-red)](https://arxiv.org/pdf/2506.19558)\
+[![Static Badge](https://img.shields.io/badge/arxiv-ConCM-red)](https://arxiv.org/pdf/2506.19558)
 
 PyTorch implementation of the ConCM Framework, ICLR 2026 🎉
 
