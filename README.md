@@ -1,6 +1,10 @@
 # ConCM: Consistency-Driven Calibration and Matching for Few-Shot Class-Incremental Learning
 
+[![Static Badge](https://img.shields.io/badge/arxiv-ConCM-red))](https://arxiv.org/pdf/2506.19558)\
+
 PyTorch implementation of the ConCM Framework, ICLR 2026 🎉
+
+
 
 Authors: [Qinzhe Wang](https://openreview.net/profile?id=~Qinzhe_Wang2), [Zixuan Chen](https://openreview.net/profile?id=~Zixuan_Chen14), [Keke Huang](https://openreview.net/profile?id=~Keke_Huang2), [Xiu Su](https://openreview.net/profile?id=~Xiu_Su1), [Chunhua Yang](https://openreview.net/profile?id=~Chunhua_Yang1), [Chang Xu](https://openreview.net/profile?id=~Chang_Xu4)
 
